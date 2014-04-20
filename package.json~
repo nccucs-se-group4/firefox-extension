@@ -1,0 +1,19 @@
+{
+  "name": "firefox-extension",
+  "title": "firefox-extension",
+  "id": "jid1-zaEbwI41XvsiYw",
+  "description": "a basic add-on",
+  "author": "",
+  "license": "MPL 2.0",
+  "version": "0.1",
+  "background": {
+    "scripts": ["background.js"]
+  }, 
+  "content_scripts": [
+    {
+      "matches": ["http://tw.news.yahoo.com/*","https://tw.news.yahoo.com/*"],
+      "css": ["mystyles.css"],
+      "js": ["myscript.js","data.js"]
+    }
+  ]
+}
