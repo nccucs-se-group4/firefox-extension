@@ -1,33 +1,54 @@
-var tabs = require("sdk/tabs");
-var pageMod = require("sdk/page-mod");
 var data = require("sdk/self").data;
+var tag = "p";
+var ly = "";
 
-tabs.on('open', function onOpen() {
-  console.log('open');
-});
-
-
-pageMod.PageMod({
+var pageMod = require("sdk/page-mod").PageMod({
   include: "*.yahoo.com",
   contentScriptWhen: 'ready',
-  contentScriptFile: [data.url("data.js"), data.url("myscript.js")]
-  //contentScript: 'window.alert("hihi");'
+  contentScriptFile: [data.url("data.js"), data.url("myscript.js")],
+  onAttach: function(worker) {
+     worker.port.emit('findLyInform', tag);
+     worker.port.on('lyInform', function(lyInform) {
+    	//console.log(lyInform);
+	ly = lyInform;
+     });
+  }
 });
-/* Listen for tab content loads.
-tabs.on('ready', function() {
-  console.log('ready');
-  contentScript: 'window.alert("Page matches ruleset");'
 
-  var objects = document.getElementById("mediaarticlebody").getElementsByTagName("p");
-  var content;
+var InformPanel = require("sdk/panel").Panel({
+  width: 360,
+  height: 360,
+  contentURL: data.url("test.html")
+  //contentScriptFile: data.url("panel.js")
+});
 
-    for(var i=0;i<objects.length;i++){
-        content += objects[i].innerHTML;
-    }
-    for(var i=0;i<LyList.length;i++){
-        var reg = new RegExp(LyList[i].name);
-        if(reg.test(content)){
-            console.log(LyList[i].name+" "+LyList[i].party);    
-        }
-    }
-});*/
+InformPanel.on("show", function() {
+  InformPanel.port.emit('showLyInform',ly);
+});
+
+InformPanel.on("hide", function() {
+  InformPanel.port.emit('killLyInform',ly);
+});
+
+InformPanel.port.on('modLink', function(msg){
+  var lyPageMod = require("sdk/page-mod").PageMod({
+  	include: "http://billy3321.github.io/lytel/",
+  	contentScriptWhen: 'ready',
+  	contentScriptFile: [data.url("scroll.js")],
+	onAttach: function(worker) {
+     		worker.port.emit('scrollTo', msg);
+	}
+});
+
+var widget = require("sdk/widget").Widget({
+  id: "test-icon",
+  label: "Test Widget",
+  content: "TEST!!",
+  panel: InformPanel,
+  onClick: function(){
+      //return InformPanel.port.emit('showLyInform',ly);
+  }
+});
+
+
+

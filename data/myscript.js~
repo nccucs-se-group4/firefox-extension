@@ -1,21 +1,18 @@
-window.onload = function(){
+self.port.on('findLyInform', function(tag){
 
-    var objects = document.getElementById("mediaarticlebody").getElementsByTagName("p");
+    var objects = document.getElementById("mediaarticlebody").getElementsByTagName(tag);
     var content;
-
-    alert("hihi1");
+    var lyInform;
 
     for(var i=0;i<objects.length;i++){
         content += objects[i].innerHTML;
     }
-    alert("hihi2");
+
     for(var i=0;i<LyList.length;i++){
-	alert("hihi3");
         var reg = new RegExp(LyList[i].name);
         if(reg.test(content)){
-            alert(LyList[i].name+" "+LyList[i].party);    
+ 	    lyInform += (LyList[i].name+"\n");
         }
     }
-    alert("hihi4");
-    
-}
+    return self.port.emit('lyInform',lyInform);
+})
