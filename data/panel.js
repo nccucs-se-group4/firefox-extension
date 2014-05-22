@@ -1,4 +1,10 @@
+var tempWin;
+
 addon.port.on('showLyInform', function(lyInform){
+    if (tempWin != null){
+	tempWin.close();	
+    }
+
     if (lyInform != ""){
     	var station = lyInform.split("\n");
     	for (var i = 0; i < station.length-1; i++) {
@@ -44,9 +50,12 @@ function ShowName(msg){
     var strWindowFeatures = "menubar=yes,location=no,resizable=yes,scrollbars=yes,status=yes,width=1000, height=600";
 
     function openRequestedPopup() {
-        windowObjectReference = window.open("http://billy3321.github.io/lytel/", "lytel", strWindowFeatures).focus();
+        windowObjectReference = window.open("http://billy3321.github.io/lytel/", "lytel", strWindowFeatures);
+	windowObjectReference.focus();
     }
     openRequestedPopup();
+    //addon.port.emit('lyWin',"http://billy3321.github.io/lytel/");
     addon.port.emit('modLink',msg);
+    tempWin = windowObjectReference;
 }
 
