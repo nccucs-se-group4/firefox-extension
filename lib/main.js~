@@ -4,16 +4,15 @@ var ly = "";
 
 var pageMod = require("sdk/page-mod").PageMod({
   include: "*.yahoo.com",
-  contentScriptWhen: 'ready',
-  contentScriptFile: [data.url("data.js"), data.url("myscript.js")],
+  contentScriptWhen: 'end',
+  contentScriptFile: [data.url("data.js"), data.url("myscript.js"), data.url("jquery-1.11.1.min.js")],
+  contentStyleFile: [data.url("mystyles.css")],
   onAttach: function(worker) {
      worker.port.emit('findLyInform', tag);
      worker.port.on('lyInform', function(lyInform) {
     	//console.log(lyInform);
 	ly = lyInform;
-	if(ly != ""){
-		InformPanel.show();
-	}
+
      });
   }
 });
