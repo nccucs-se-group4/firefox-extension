@@ -1,6 +1,6 @@
 self.port.on('scrollTo', function(elID){
     window.onload = function(){
-    	showIt(elID);
+    	setTimeout(function(){showIt(elID);},1000);
     	function showIt(elID) {
     		var allImages = document.getElementsByTagName("img");
 
