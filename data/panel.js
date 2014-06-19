@@ -23,16 +23,40 @@ addon.port.on('killLyInform', function(lyInform){
 function create_new_row_button(eT, msg) {
     var eR = document.createElement("tr");
     var eC = document.createElement("td");
-    var eB = document.createElement("input");
-    eB.type = "button"
+    var eB =document.createTextNode(msg);
+    var eD = document.createElement("td");
+    var tel = document.createElement("img");
+    var eE = document.createElement("td");
+    var zb = document.createElement("img");
+
+    /*eB.type = "button";
     eB.value= msg;
-    eB.style.width = "300px";
-    eB.onclick = function(){ShowName(msg);};
-    //eB.onclick = addon.port.emit('link', "王金平");
+    eB.style.height = "70px";
+    eB.style.width = "100px";*/
+
+    tel.setAttribute("src", "tel.jpg");
+    tel.setAttribute("title", "tel");
+    tel.setAttribute("height", "60");
+    tel.setAttribute("width", "80"); 
+    tel.setAttribute("onmouseover", "");
+    tel.setAttribute("style", "cursor: pointer;");
+    tel.onclick = function(){ShowTel(msg);};
+
+    zb.setAttribute("src", "zb.jpg");
+    zb.setAttribute("height", "60");
+    zb.setAttribute("width", "80");
+    zb.setAttribute("title", "zb");
+    zb.setAttribute("onmouseover", "");
+    zb.setAttribute("style", "cursor: pointer;");
+    zb.onclick = function(){ShowZb(msg);};
 
     eT.appendChild(eR);
     eR.appendChild(eC);
     eC.appendChild(eB);
+    eD.appendChild(tel);
+    eR.appendChild(eD);
+    eE.appendChild(zb);
+    eR.appendChild(eE);
 }
 
 function removeElement() {
@@ -43,7 +67,7 @@ function removeElement() {
 
 }
 
-function ShowName(msg){
+function ShowTel(msg){
     //alert(msg);
     
     var windowObjectReference;
@@ -58,4 +82,21 @@ function ShowName(msg){
     addon.port.emit('modLink',msg);
     tempWin = windowObjectReference;
 }
+
+function ShowZb(msg){
+    //alert(msg);
+    
+    var windowObjectReference;
+    var strWindowFeatures = "menubar=yes,location=no,resizable=yes,scrollbars=yes,status=yes,width=1000, height=220";
+
+    function openRequestedPopup() {
+        windowObjectReference = window.open("http://to.13pa.tw/#ranking", "lyzb", strWindowFeatures);
+	windowObjectReference.focus();
+    }
+    openRequestedPopup();
+    //addon.port.emit('lyWin',"http://billy3321.github.io/lytel/");
+    addon.port.emit('modLink2',msg);
+    tempWin = windowObjectReference;
+}
+
 

@@ -57,10 +57,23 @@ InformPanel.port.on('modLink', function(msg){
     });
 });
 
+InformPanel.port.on('modLink2', function(msg){
+  var lyPageMod = require("sdk/page-mod").PageMod({
+  	include: "http://to.13pa.tw/#ranking",
+  	contentScriptWhen: 'ready',
+  	contentScriptFile: [data.url("scroll2.js")],
+	onAttach: function(worker) {
+     		worker.port.emit('scrollTo2', msg);
+	}
+    });
+});
+
 var widget = require("sdk/widget").Widget({
-  id: "test-icon",
-  label: "Test Widget",
-  content: "TEST!!",
+  id: "caller-icon",
+  width:240,
+  height:240,
+  label: "News Caller",
+  contentURL: data.url("widget.jpg"),
   panel: InformPanel,
   onClick: function(){
 
